@@ -23,9 +23,6 @@ extra_compile_args = {
 if torch.version.hip:
     extra_compile_args["nvcc"].append("-U__HIP_NO_HALF_CONVERSIONS__")
 
-if platform.system() == "Windows":
-    extra_compile_args["nvcc"].append("-D__CUDA_NO_HALF_OPERATORS__")
-
 version = "0.0.1" + (f"+cu{CUDA_VERSION}" if CUDA_VERSION else f"+rocm{ROCM_VERSION}" if ROCM_VERSION else "")
 setup(
     name="quipsharp",
