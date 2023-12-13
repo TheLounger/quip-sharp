@@ -2,7 +2,18 @@ name: CI
 on: [push]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: ${{ matrix.os }} Python ${{ matrix.pyver }} CUDA ${{ matrix.cuda }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        pyver: ["3.11"]
+        cuda: ["12.1.1"]
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      CUDAVER: ${{ matrix.cuda }}
     steps:
     - uses: actions/checkout@v3
     - name: Setup tmate session
