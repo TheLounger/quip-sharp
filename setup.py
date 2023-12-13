@@ -23,6 +23,16 @@ extra_compile_args = {
 if torch.version.hip:
     extra_compile_args["nvcc"].append("-U__HIP_NO_HALF_CONVERSIONS__")
 
+# Copied from https://github.com/PanQiWei/AutoGPTQ/blob/main/setup.py
+if os.name == "nt":
+    # On Windows, fix an error LNK2001: unresolved external symbol cublasHgemm bug in the compilation
+    cuda_path = os.environ.get("CUDA_PATH", None)
+    if cuda_path is None:
+        raise ValueError("The environment variable CUDA_PATH must be set to the path to the CUDA install when installing from source on Windows systems.")
+    extra_link_args = ["-L", f"{cuda_path}/lib/x64/cublas.lib"]
+else:
+    extra_link_args = []
+
 version = "0.0.1" + (f"+cu{CUDA_VERSION}" if CUDA_VERSION else f"+rocm{ROCM_VERSION}" if ROCM_VERSION else "")
 setup(
     name="quipsharp",
@@ -39,6 +49,7 @@ setup(
             'quiptools/quiptools_e8p_gemv.cu'
         ],
         extra_compile_args=extra_compile_args,
+        extra_link_args=extra_link_args
     )],
     cmdclass={"build_ext": cpp_extension.BuildExtension},
 )
