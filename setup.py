@@ -39,7 +39,6 @@ setup(
             'quiptools/quiptools_e8p_gemv.cu'
         ],
         extra_compile_args=extra_compile_args,
-        libraries=["cublas"] if platform.system() == "Windows" else [],
     )],
     cmdclass={"build_ext": cpp_extension.BuildExtension},
 )
