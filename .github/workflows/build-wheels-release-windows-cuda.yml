@@ -1,5 +1,9 @@
 name: Build Windows CUDA Wheels & Release
 
+on:
+  workflow_dispatch:
+  workflow_call:
+
 permissions:
   contents: write
 
