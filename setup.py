@@ -47,9 +47,9 @@ setup(
     ext_modules=[cpp_extension.CUDAExtension(
         'quiptools_cuda',
         [
-            'quiptools/quiptools_wrapper.cpp',
-            'quiptools/quiptools.cu',
-            'quiptools/quiptools_e8p_gemv.cu'
+            'vendor/quip-sharp/quiptools/quiptools_wrapper.cpp',
+            'vendor/quip-sharp/quiptools/quiptools.cu',
+            'vendor/quip-sharp/quiptools/quiptools_e8p_gemv.cu'
         ],
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args
