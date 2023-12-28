@@ -17,6 +17,7 @@ def get_cuda_version(cuda_home=os.environ.get('CUDA_PATH', os.environ.get('CUDA_
 
 CUDA_VERSION = "".join(get_cuda_version().split(".")) if not os.environ.get('ROCM_VERSION', False) else False
 ROCM_VERSION = os.environ.get('ROCM_VERSION', False) if torch.version.hip else False
+PACKAGE_VERSION = "0.0.1" + (f"+cu{CUDA_VERSION}" if CUDA_VERSION else f"+rocm{ROCM_VERSION}" if ROCM_VERSION else "")
 
 extra_compile_args = {
     'cxx': ['-lineinfo'],
@@ -36,10 +37,9 @@ if os.name == "nt":
 else:
     extra_link_args = []
 
-version = "0.0.1" + (f"+cu{CUDA_VERSION}" if CUDA_VERSION else f"+rocm{ROCM_VERSION}" if ROCM_VERSION else "")
 setup(
     name="quipsharp",
-    version=version,
+    version=PACKAGE_VERSION,
     install_requires=[
         "torch",
     ],
