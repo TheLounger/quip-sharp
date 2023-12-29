@@ -1,3 +1,4 @@
 [submodule "vendor/quip-sharp"]
 	path = vendor/quip-sharp
 	url = https://github.com/Cornell-RelaxML/quip-sharp.git
+	ignore = dirty
