@@ -3,6 +3,7 @@ import platform
 import subprocess
 import torch
 
+from glob import glob
 from setuptools import setup, find_packages
 from torch.utils import cpp_extension
 
@@ -37,19 +38,22 @@ if os.name == "nt":
 else:
     extra_link_args = []
 
+quip_dir = os.path.join('vendor', 'quip-sharp')
 setup(
     name="quipsharp",
     version=PACKAGE_VERSION,
     install_requires=[
         "torch",
     ],
-    packages=find_packages(),
+    packages=find_packages(quip_dir),
+    package_dir={'': quip_dir},
+    data_files=[('model', glob(os.path.join(quip_dir, 'model', '*.py')))],
     ext_modules=[cpp_extension.CUDAExtension(
         'quiptools_cuda',
         [
-            'vendor/quip-sharp/quiptools/quiptools_wrapper.cpp',
-            'vendor/quip-sharp/quiptools/quiptools.cu',
-            'vendor/quip-sharp/quiptools/quiptools_e8p_gemv.cu'
+            os.path.join(quip_dir, 'quiptools', 'quiptools_wrapper.cpp'),
+            os.path.join(quip_dir, 'quiptools', 'quiptools.cu'),
+            os.path.join(quip_dir, 'quiptools', 'quiptools_e8p_gemv.cu'),
         ],
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args
